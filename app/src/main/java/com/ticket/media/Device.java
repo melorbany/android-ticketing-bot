@@ -1,4 +1,4 @@
-package com.audio.ticket;
+package com.ticket.media;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;

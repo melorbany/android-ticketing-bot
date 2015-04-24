@@ -1,4 +1,4 @@
-package com.audio.ticket;
+package com.ticket.media;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;

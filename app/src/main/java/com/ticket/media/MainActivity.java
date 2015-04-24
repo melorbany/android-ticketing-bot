@@ -1,4 +1,4 @@
-package com.audio.ticket;
+package com.ticket.media;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,6 +30,20 @@ public class MainActivity extends Activity {
                 }
             }
         });
+
+        Button btnNewMediaTicket = (Button)findViewById(R.id.btnNewMediaTicket);
+        btnNewMediaTicket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent(MainActivity.this, NewMediaTicketActivity.class);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
+            }
+        });
+
     }
 
 

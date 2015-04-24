@@ -1,4 +1,4 @@
-package com.audio.ticket;
+package com.ticket.media;
 
 public class Config {
 	// File upload url (replace the ip with your server address)

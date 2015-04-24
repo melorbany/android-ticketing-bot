@@ -1,17 +1,19 @@
-package com.audio.ticket;
+package com.ticket.media;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.ImageView;
 import android.widget.TextView;
 public class SplashScreen extends Activity {
 
     boolean isAutoLogin = false;
     Intent intent;
     TextView textView;
+    ImageView imgLogo;
     // Splash screen timer
-    private int splashTime = 4000;
+    private int splashTime = 6000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,13 +22,31 @@ public class SplashScreen extends Activity {
 
 
         textView = (TextView) findViewById(R.id.splashstatus);
-        new Handler().postDelayed(new Runnable() {
+        imgLogo = (ImageView) findViewById(R.id.imgLogo);
 
-            @Override
-            public void run() {
-//                textView.setText(R.string.retrieve_data);
-            }
-        }, 3000);
+//        new Handler().postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                imgLogo.setImageResource(R.drawable.si0);
+//            }
+//        }, 1000);
+//
+//        new Handler().postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//               imgLogo.setImageResource(R.drawable.si1);
+//            }
+//        }, 1000);
+//
+//        new Handler().postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                imgLogo.setImageResource(R.drawable.si2);
+//            }
+//        }, 1000);
 
         intent = new Intent(SplashScreen.this, MainActivity.class);
         new Handler().postDelayed(new Runnable() {
@@ -41,8 +61,8 @@ public class SplashScreen extends Activity {
                 // This method will be executed once the timer is over
                 // Start your app main activity
                 //StartAnimations();
+                imgLogo.setImageResource(R.drawable.sp1);
                 startActivity(intent);
-
                 // close this activity
                 finish();
             }

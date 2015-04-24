@@ -1,5 +1,5 @@
 
-package com.audio.ticket;
+package com.ticket.media;
 
 import java.io.File;
 import java.io.IOException;

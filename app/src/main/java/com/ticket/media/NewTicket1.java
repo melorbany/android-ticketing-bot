@@ -1,4 +1,4 @@
-package com.audio.ticket;
+package com.ticket.media;
 
 import android.app.Activity;
 import android.app.AlertDialog;

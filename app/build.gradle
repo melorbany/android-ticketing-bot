@@ -18,7 +18,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.audio.recorder"
+        applicationId "com.ticket.media"
         minSdkVersion 11
         targetSdkVersion 19
     }
