@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Audio Ticket</string>
+    <string name="app_name_c">AUDIO TICKET</string>
+    <string name="init_time">00:00</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
+    <string name="record">Record</string>
+    <string name="delete">Delete</string>
+    <string name="connect_server">CONNECTING TO SERVER</string>
+    <string name="retrieve_data">RETRIEVING USER DATA</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_new_ticket">New Ticket</string>
+
+
+</resources>

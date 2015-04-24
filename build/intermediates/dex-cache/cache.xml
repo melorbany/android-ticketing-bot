@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\httpmime-4.3.6-9b57f164864fcc9852c20e8efeee820760f9ad05.jar"
+        jar="C:\Users\toshiba\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpmime\4.3.6\cf8bacbf0d476c7f2221f861269365b66447f7ec\httpmime-4.3.6.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="cf8bacbf0d476c7f2221f861269365b66447f7ec"/>
+    <item
+        dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\httpclient-android-4.3.5-20207c9d112673c49149ab7f7484eb7a19653d1a.jar"
+        jar="C:\Users\toshiba\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpclient-android\4.3.5\82edcaec6c7b4599eaeaaf11167ceea41db42f33\httpclient-android-4.3.5.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="82edcaec6c7b4599eaeaaf11167ceea41db42f33"/>
+
+</pre-dex-items>
