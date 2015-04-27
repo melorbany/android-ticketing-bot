@@ -24,6 +24,7 @@
     <string name="btnIntendV">Take Video</string>
     <string name="cannot">Cannot</string>
     <string name="album_name">MediaTicket</string>
+    <string name="title_activity_chat">ChatActivity</string>
 
 
 

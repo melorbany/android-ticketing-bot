@@ -44,6 +44,21 @@ public class MainActivity extends Activity {
             }
         });
 
+
+        Button btnChatTicket = (Button)findViewById(R.id.btnChatTicket);
+        btnChatTicket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.getMessage();
+                }
+            }
+        });
+
+
     }
 
 

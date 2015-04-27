@@ -1,4 +1,4 @@
-package com.ticket.media;
+package com.ticket.helpers;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;

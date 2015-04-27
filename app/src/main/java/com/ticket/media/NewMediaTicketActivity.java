@@ -11,7 +11,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaRecorder;
@@ -26,12 +25,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.VideoView;
 
 import com.ticket.camera.AlbumStorageDirFactory;
 import com.ticket.camera.BaseAlbumDirFactory;
 import com.ticket.camera.FroyoAlbumDirFactory;
+import com.ticket.helpers.Config;
+import com.ticket.helpers.Device;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
