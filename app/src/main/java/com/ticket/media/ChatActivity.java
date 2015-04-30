@@ -1,6 +1,7 @@
 package com.ticket.media;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,12 +10,15 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -42,6 +46,7 @@ import java.nio.charset.Charset;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 
 public class ChatActivity extends Activity {
@@ -268,5 +273,11 @@ public class ChatActivity extends Activity {
         }
 
     }
+
+
+    /**
+     * Fragment that appears in the "content_frame", shows a planet
+     */
+
 
 }
