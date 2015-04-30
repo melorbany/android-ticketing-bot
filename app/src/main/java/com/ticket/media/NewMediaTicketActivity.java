@@ -82,9 +82,9 @@ public class NewMediaTicketActivity extends Activity implements OnCompletionList
 
 
     private static final String TAG = "Audio";
-    private static final int ACTION_TAKE_PHOTO_B = 1;
-    private static final int ACTION_TAKE_PHOTO_S = 2;
-    private static final int ACTION_TAKE_VIDEO = 3;
+    public static final int ACTION_TAKE_PHOTO_B = 1;
+    public static final int ACTION_TAKE_PHOTO_S = 2;
+    public static final int ACTION_TAKE_VIDEO = 3;
 
     private static final String BITMAP_STORAGE_KEY = "viewbitmap";
     private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";

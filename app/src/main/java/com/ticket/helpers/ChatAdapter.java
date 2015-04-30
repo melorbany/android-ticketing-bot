@@ -9,10 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.ticket.media.R;
 
@@ -57,28 +58,43 @@ public class ChatAdapter extends BaseAdapter {
         ViewHolder holder;
         Message chatMessage = getItem(position);
         LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        int type  = chatMessage.getType();
 
-        if (convertView == null) {
-            convertView = vi.inflate(R.layout.list_item_message, null);
-            holder = createViewHolder(convertView);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
+        switch (type) {
+            case 1:
+                convertView = vi.inflate(R.layout.list_item_image, null);
+                break;
+            case 2:
+                convertView = vi.inflate(R.layout.list_item_video, null);
+                break;
+            default:
+                convertView = vi.inflate(R.layout.list_item_message, null);
         }
+
+        holder = createViewHolder(convertView);
+        convertView.setTag(holder);
 
         boolean isOutgoing = chatMessage.isSender();
-        setAlignment(holder, isOutgoing);
-        holder.txtMessage.setText(chatMessage.getData());
+        setAlignment(holder, isOutgoing,type);
 
-        if (chatMessage.isSender()) {
-            holder.txtInfo.setText("["+getTimeText(chatMessage)+"] You:");
-            if(chatMessage.getType() == 1){
-                holder.audioSeekBar.setVisibility(View.VISIBLE);
-            }
-        } else {
-            holder.txtInfo.setText("Server Response");
-            holder.audioSeekBar.setVisibility(View.INVISIBLE);
+        switch (type) {
+            case 1:
+                holder.imgMessage.setImageURI(chatMessage.getUri());
+                break;
+            case 2:
+                holder.videoMessage.setVideoURI(chatMessage.getUri());
+                break;
+            default:
+                holder.txtMessage.setText(chatMessage.getData());
         }
+
+
+
+//        if (chatMessage.isSender()) {
+//            holder.txtInfo.setText("["+getTimeText(chatMessage)+"] You:");
+//        } else {
+//            holder.txtInfo.setText("Server Response");
+//        }
 
         return convertView;
     }
@@ -91,7 +107,7 @@ public class ChatAdapter extends BaseAdapter {
         chatMessages.addAll(messages);
     }
 
-    private void setAlignment(ViewHolder holder, boolean isOutgoing) {
+    private void setAlignment(ViewHolder holder, boolean isOutgoing,int type) {
         if (isOutgoing) {
             holder.contentWithBG.setBackgroundResource(R.drawable.incoming_message_bg);
 
@@ -103,9 +119,24 @@ public class ChatAdapter extends BaseAdapter {
             lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
             lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             holder.content.setLayoutParams(lp);
-            layoutParams = (LinearLayout.LayoutParams) holder.txtMessage.getLayoutParams();
-            layoutParams.gravity = Gravity.RIGHT;
-            holder.txtMessage.setLayoutParams(layoutParams);
+
+            switch (type) {
+                case 1:
+                    layoutParams = (LinearLayout.LayoutParams) holder.imgMessage.getLayoutParams();
+                    layoutParams.gravity = Gravity.RIGHT;
+                    holder.imgMessage.setLayoutParams(layoutParams);
+                    break;
+                case 2:
+                    layoutParams = (LinearLayout.LayoutParams) holder.videoMessage.getLayoutParams();
+                    layoutParams.gravity = Gravity.RIGHT;
+                    holder.videoMessage.setLayoutParams(layoutParams);
+                    break;
+                default:
+                    layoutParams = (LinearLayout.LayoutParams) holder.txtMessage.getLayoutParams();
+                    layoutParams.gravity = Gravity.RIGHT;
+                    holder.txtMessage.setLayoutParams(layoutParams);
+            }
+
 
             layoutParams = (LinearLayout.LayoutParams) holder.txtInfo.getLayoutParams();
             layoutParams.gravity = Gravity.RIGHT;
@@ -121,9 +152,23 @@ public class ChatAdapter extends BaseAdapter {
             lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
             lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             holder.content.setLayoutParams(lp);
-            layoutParams = (LinearLayout.LayoutParams) holder.txtMessage.getLayoutParams();
-            layoutParams.gravity = Gravity.LEFT;
-            holder.txtMessage.setLayoutParams(layoutParams);
+
+            switch (type) {
+                case 1:
+                    layoutParams = (LinearLayout.LayoutParams) holder.imgMessage.getLayoutParams();
+                    layoutParams.gravity = Gravity.LEFT;
+                    holder.imgMessage.setLayoutParams(layoutParams);
+                    break;
+                case 2:
+                    layoutParams = (LinearLayout.LayoutParams) holder.videoMessage.getLayoutParams();
+                    layoutParams.gravity = Gravity.LEFT;
+                    holder.videoMessage.setLayoutParams(layoutParams);
+                    break;
+                default:
+                    layoutParams = (LinearLayout.LayoutParams) holder.txtMessage.getLayoutParams();
+                    layoutParams.gravity = Gravity.LEFT;
+                    holder.txtMessage.setLayoutParams(layoutParams);
+            }
 
             layoutParams = (LinearLayout.LayoutParams) holder.txtInfo.getLayoutParams();
             layoutParams.gravity = Gravity.LEFT;
@@ -134,10 +179,11 @@ public class ChatAdapter extends BaseAdapter {
     private ViewHolder createViewHolder(View v) {
         ViewHolder holder = new ViewHolder();
         holder.txtMessage = (TextView) v.findViewById(R.id.txtMessage);
+        holder.imgMessage = (ImageView) v.findViewById(R.id.imgMessage);
+        holder.videoMessage = (VideoView) v.findViewById(R.id.videoMessage);
         holder.content = (LinearLayout) v.findViewById(R.id.content);
         holder.contentWithBG = (LinearLayout) v.findViewById(R.id.contentWithBackground);
         holder.txtInfo = (TextView) v.findViewById(R.id.txtInfo);
-        holder.audioSeekBar = (LinearLayout) v.findViewById(R.id.audioSeekBar);
         return holder;
     }
 
@@ -147,9 +193,10 @@ public class ChatAdapter extends BaseAdapter {
 
     private static class ViewHolder {
         public TextView txtMessage;
+        public ImageView imgMessage;
+        public VideoView videoMessage;
         public TextView txtInfo;
         public LinearLayout content;
         public LinearLayout contentWithBG;
-        public LinearLayout audioSeekBar;
     }
 }

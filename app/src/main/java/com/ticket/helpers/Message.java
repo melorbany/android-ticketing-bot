@@ -1,5 +1,8 @@
 package com.ticket.helpers;
 
+
+import android.net.Uri;
+
 import java.sql.Time;
 import java.util.Date;
 
@@ -14,6 +17,7 @@ public class Message {
     String data;
     String path;
     Date DateSent ;
+    Uri uri;
 
     public Message() {
     }
@@ -56,5 +60,13 @@ public class Message {
 
     public void setDateSent(Date dateSent) {
         DateSent = dateSent;
+    }
+
+    public Uri getUri() {
+        return uri;
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
     }
 }
