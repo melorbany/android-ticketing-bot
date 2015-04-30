@@ -22,12 +22,15 @@ import com.ticket.helpers.Message;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +41,7 @@ import java.nio.charset.Charset;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class ChatActivity extends Activity {
@@ -48,6 +52,7 @@ public class ChatActivity extends Activity {
     private ProgressBar progressBar;
     private Button sendButton;
     public Device device;
+    private String tempMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +82,13 @@ public class ChatActivity extends Activity {
                 chatMessage.setData(messageText);
                 chatMessage.setSender(true);
                 chatMessage.setDateSent(new Date());
+                tempMessage = messageText;
 
                 messageEditText.setText("");
                 showMessage(chatMessage);
-                new UploadFileToServer().execute();
+                new TextMessageSender().execute();
 
-                InputMethodManager imm = (InputMethodManager)getSystemService(
+                InputMethodManager imm = (InputMethodManager) getSystemService(
                         Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(messageEditText.getWindowToken(), 0);
 
@@ -90,8 +96,6 @@ public class ChatActivity extends Activity {
             }
         });
     }
-
-
 
 
     @Override
@@ -134,7 +138,7 @@ public class ChatActivity extends Activity {
     }
 
 
-    private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
+    private class TextMessageSender extends AsyncTask<Void, Integer, String> {
         @Override
         protected void onPreExecute() {
             // setting progress bar to zero
@@ -156,26 +160,25 @@ public class ChatActivity extends Activity {
 
         @Override
         protected String doInBackground(Void... params) {
-            return uploadFile();
+            return sendMessage();
         }
 
         @SuppressWarnings("deprecation")
-        private String uploadFile() {
+        private String sendMessage() {
             String responseString = null;
 
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL);
-
+            HttpPost httpPost = new HttpPost(Config.INBOUND_MESSAGE);
 
             try {
-                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                        new AndroidMultiPartEntity.ProgressListener() {
-
-                            @Override
-                            public void transferred(long num) {
-//                                publishProgress((int) ((num / (float) totalSize) * 100));
-                            }
-                        });
+//                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
+//                        new AndroidMultiPartEntity.ProgressListener() {
+//
+//                            @Override
+//                            public void transferred(long num) {
+////                                publishProgress((int) ((num / (float) totalSize) * 100));
+//                            }
+//                        });
 
 //                MultipartEntity entity = new MultipartEntity();
 
@@ -184,21 +187,38 @@ public class ChatActivity extends Activity {
 
                 // Adding file data to http body
 //                entity.addPart("audio", new FileBody(sourceFile));
-                entity.addPart("email", new StringBody(device.getGoogleAccount()));
-                entity.addPart("device", new StringBody(device.getDeviceID()));
-                entity.addPart("title", new StringBody("Hellllo"));
-                entity.addPart("description", new StringBody("dhdjhhd"));
+//                entity.addPart("email", new StringBody(device.getGoogleAccount()));
+//                entity.addPart("device", new StringBody(device.getDeviceID()));
+//                entity.addPart("title", new StringBody("Hellllo"));
+//                entity.addPart("description", new StringBody("dhdjhhd"));
+//
+//                httpPost.setEntity(entity);
 
-                httppost.setEntity(entity);
+                System.out.println("tempMessage >>>>>>>>>>>>>> " + tempMessage);
+                System.out.println("device.getDeviceID():: " + device.getDeviceID());
+                System.out.println("device.getGoogleAccount():: " + device.getGoogleAccount());
 
                 // Making server call
-                HttpResponse response = httpclient.execute(httppost);
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                nameValuePairs.add(new BasicNameValuePair("pT_SENDER", device.getDeviceID()));
+                nameValuePairs.add(new BasicNameValuePair("pT_SENDER_NICKNAME", device.getGoogleAccount()));
+                nameValuePairs.add(new BasicNameValuePair("pT_CONTENT", tempMessage));
+                nameValuePairs.add(new BasicNameValuePair("pT_CONTENT_TYPE_T_I_V_L","T"));
+                nameValuePairs.add(new BasicNameValuePair("pT_CAPTION", ""));
+                nameValuePairs.add(new BasicNameValuePair("pT_DETECTED_LANG_AR_EN", "AR"));
+                nameValuePairs.add(new BasicNameValuePair("pT_ONLINE_OFFLINE_O_F", "O"));
+                nameValuePairs.add(new BasicNameValuePair("pT_PARTICIPANT", ""));
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+                HttpResponse response = httpclient.execute(httpPost);
                 HttpEntity r_entity = response.getEntity();
 
                 int statusCode = response.getStatusLine().getStatusCode();
                 if (statusCode == 200) {
                     // Server response
                     responseString = EntityUtils.toString(r_entity);
+                    System.out.println("getContentCharSet >>>>>>>>>>>>>> " + EntityUtils.getContentCharSet(r_entity));
+                    System.out.println("responseString >>>>>>>>>>>>>> " + responseString);
                 } else {
                     responseString = "Error Status Code: "
                             + statusCode;
@@ -208,31 +228,22 @@ public class ChatActivity extends Activity {
                 responseString = e.toString();
             } catch (IOException e) {
                 responseString = e.toString();
-            } catch (Exception e){
+            } catch (Exception e) {
                 responseString = e.toString();
             }
 
             return responseString;
-
         }
 
         @Override
         protected void onPostExecute(String result) {
+            if (result == null || result.equals(""))
+                return;
 
-            String returnValue ="";
-            try {
-                JSONObject jsonObj = new JSONObject(result);
-                if (jsonObj == null)
-                    return;
 
-                returnValue = jsonObj.getString("id");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if(returnValue !="") {
+            if (result != "") {
                 Message chatMessage = new Message();
-                chatMessage.setData(returnValue + "");
+                chatMessage.setData(result + "");
                 chatMessage.setSender(false);
                 chatMessage.setDateSent(new Date());
                 showMessage(chatMessage);

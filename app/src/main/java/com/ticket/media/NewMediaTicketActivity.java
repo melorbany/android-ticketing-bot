@@ -525,7 +525,7 @@ public class NewMediaTicketActivity extends Activity implements OnCompletionList
             String responseString = null;
 
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL);
+            HttpPost httppost = new HttpPost(Config.INBOUND_MESSAGE);
 
 
             try {
