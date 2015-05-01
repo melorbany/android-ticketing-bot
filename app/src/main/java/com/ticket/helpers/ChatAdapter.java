@@ -70,7 +70,7 @@ public class ChatAdapter extends BaseAdapter {
         int type  = chatMessage.getType();
 
         if (convertView == null) {
-            convertView = vi.inflate(R.layout.list_item_fragement, null);
+            convertView = vi.inflate(R.layout.list_item_message, null);
             holder = createViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -81,21 +81,38 @@ public class ChatAdapter extends BaseAdapter {
         boolean isOutgoing = chatMessage.isSender();
         setAlignment(holder, isOutgoing,type);
 
-//        switch (type) {
-//            case 1:
-//                holder.imgMessage.setImageURI(chatMessage.getUri());
-//                break;
-//            case 2:
-//                holder.videoMessage.setVideoURI(chatMessage.getUri());
-//                break;
-//            default:
-//                holder.txtMessage.setText(chatMessage.getData());
-//        }
+        switch (type) {
+            case 1:
+                holder.imgMessage.setVisibility(View.VISIBLE);
+                holder.imgMessage.setImageURI(chatMessage.getUri());
+                holder.videoMessage.setVisibility(View.GONE);
+                holder.txtMessage.setVisibility(View.GONE);
+                break;
+            case 2:
+                holder.videoMessage.setVisibility(View.VISIBLE);
+                holder.videoMessage.setVideoURI(chatMessage.getUri());
+                holder.imgMessage.setVisibility(View.GONE);
+                holder.txtMessage.setVisibility(View.GONE);
+                break;
+            default:
+                holder.txtMessage.setVisibility(View.VISIBLE);
+                holder.txtMessage.setText(chatMessage.getData());
+                holder.videoMessage.setVisibility(View.GONE);
+                holder.imgMessage.setVisibility(View.GONE);
+                break;
+        }
 
-        Fragment fragment = new MessageFragment(chatMessage);
-        FragmentManager fragmentManager = context.getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
+//        Fragment fragment = new MessageFragment();
+//
+//        Bundle args = new Bundle();
+//        args.putInt(MessageFragment.TYPE, chatMessage.getType());
+//        args.putString(MessageFragment.DATA, chatMessage.getData());
+//        fragment.setArguments(args);
+//
+//
+//        FragmentManager fragmentManager = context.getFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+//
 
 //        if (chatMessage.isSender()) {
 //            holder.txtInfo.setText("["+getTimeText(chatMessage)+"] You:");
@@ -128,27 +145,27 @@ public class ChatAdapter extends BaseAdapter {
             holder.content.setLayoutParams(lp);
 
 
-            layoutParams = (LinearLayout.LayoutParams) holder.content_frame.getLayoutParams();
-            layoutParams.gravity = Gravity.RIGHT;
-            holder.content_frame.setLayoutParams(layoutParams);
+//            layoutParams = (LinearLayout.LayoutParams) holder.content_frame.getLayoutParams();
+//            layoutParams.gravity = Gravity.RIGHT;
+//            holder.content_frame.setLayoutParams(layoutParams);
 
-//
-//            switch (type) {
-//                case 1:
-//                    layoutParams = (LinearLayout.LayoutParams) holder.imgMessage.getLayoutParams();
-//                    layoutParams.gravity = Gravity.RIGHT;
-//                    holder.imgMessage.setLayoutParams(layoutParams);
-//                    break;
-//                case 2:
-//                    layoutParams = (LinearLayout.LayoutParams) holder.videoMessage.getLayoutParams();
-//                    layoutParams.gravity = Gravity.RIGHT;
-//                    holder.videoMessage.setLayoutParams(layoutParams);
-//                    break;
-//                default:
-//                    layoutParams = (LinearLayout.LayoutParams) holder.txtMessage.getLayoutParams();
-//                    layoutParams.gravity = Gravity.RIGHT;
-//                    holder.txtMessage.setLayoutParams(layoutParams);
-//            }
+
+            switch (type) {
+                case 1:
+                    layoutParams = (LinearLayout.LayoutParams) holder.imgMessage.getLayoutParams();
+                    layoutParams.gravity = Gravity.RIGHT;
+                    holder.imgMessage.setLayoutParams(layoutParams);
+                    break;
+                case 2:
+                    layoutParams = (LinearLayout.LayoutParams) holder.videoMessage.getLayoutParams();
+                    layoutParams.gravity = Gravity.RIGHT;
+                    holder.videoMessage.setLayoutParams(layoutParams);
+                    break;
+                default:
+                    layoutParams = (LinearLayout.LayoutParams) holder.txtMessage.getLayoutParams();
+                    layoutParams.gravity = Gravity.RIGHT;
+                    holder.txtMessage.setLayoutParams(layoutParams);
+            }
 
 
             layoutParams = (LinearLayout.LayoutParams) holder.txtInfo.getLayoutParams();
@@ -165,27 +182,27 @@ public class ChatAdapter extends BaseAdapter {
             lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
             lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             holder.content.setLayoutParams(lp);
-//
-//            switch (type) {
-//                case 1:
-//                    layoutParams = (LinearLayout.LayoutParams) holder.imgMessage.getLayoutParams();
-//                    layoutParams.gravity = Gravity.LEFT;
-//                    holder.imgMessage.setLayoutParams(layoutParams);
-//                    break;
-//                case 2:
-//                    layoutParams = (LinearLayout.LayoutParams) holder.videoMessage.getLayoutParams();
-//                    layoutParams.gravity = Gravity.LEFT;
-//                    holder.videoMessage.setLayoutParams(layoutParams);
-//                    break;
-//                default:
-//                    layoutParams = (LinearLayout.LayoutParams) holder.txtMessage.getLayoutParams();
-//                    layoutParams.gravity = Gravity.LEFT;
-//                    holder.txtMessage.setLayoutParams(layoutParams);
-//            }
 
-            layoutParams = (LinearLayout.LayoutParams) holder.content_frame.getLayoutParams();
-            layoutParams.gravity = Gravity.LEFT;
-            holder.content_frame.setLayoutParams(layoutParams);
+            switch (type) {
+                case 1:
+                    layoutParams = (LinearLayout.LayoutParams) holder.imgMessage.getLayoutParams();
+                    layoutParams.gravity = Gravity.LEFT;
+                    holder.imgMessage.setLayoutParams(layoutParams);
+                    break;
+                case 2:
+                    layoutParams = (LinearLayout.LayoutParams) holder.videoMessage.getLayoutParams();
+                    layoutParams.gravity = Gravity.LEFT;
+                    holder.videoMessage.setLayoutParams(layoutParams);
+                    break;
+                default:
+                    layoutParams = (LinearLayout.LayoutParams) holder.txtMessage.getLayoutParams();
+                    layoutParams.gravity = Gravity.LEFT;
+                    holder.txtMessage.setLayoutParams(layoutParams);
+            }
+
+//            layoutParams = (LinearLayout.LayoutParams) holder.content_frame.getLayoutParams();
+//            layoutParams.gravity = Gravity.LEFT;
+//            holder.content_frame.setLayoutParams(layoutParams);
 
 
             layoutParams = (LinearLayout.LayoutParams) holder.txtInfo.getLayoutParams();
@@ -224,13 +241,12 @@ public class ChatAdapter extends BaseAdapter {
 
     @SuppressLint("ValidFragment")
     public static class MessageFragment extends Fragment {
-        public static final String ARG_PLANET_NUMBER = "planet_number";
+        public static final String TYPE = "type";
+        public static final String DATA = "data";
 
         Message message;
         @SuppressLint("ValidFragment")
-        public MessageFragment(Message message) {
-            // Empty constructor required for fragment subclasses
-            this.message = message;
+        public MessageFragment() {
         }
 
         @Override
@@ -238,7 +254,9 @@ public class ChatAdapter extends BaseAdapter {
                                  Bundle savedInstanceState) {
             //Log.i('Tag','onCreateView');
             View rootView = null;
-            switch (message.getType()){
+            int type = getArguments().getInt(TYPE);
+
+            switch (type){
                 case 1:
                    rootView = inflater.inflate(R.layout.fragment_image, container, false);
                    ((ImageView) rootView.findViewById(R.id.imgMessage)).setImageURI(message.getUri());
@@ -246,19 +264,17 @@ public class ChatAdapter extends BaseAdapter {
 
                 default:
                     rootView = inflater.inflate(R.layout.fragment_text, container, false);
-                    ((TextView) rootView.findViewById(R.id.txtMessage)).setText(message.getData());
+                    String data = getArguments().getString(DATA);
+
+                    Log.d("tt",data);
+
+                    ((TextView) rootView.findViewById(R.id.txtMessage)).setText(data);
                     break;
             }
 
             return rootView;
         }
 
-
-
-        public View draw(){
-            View rootView = null;
-
-        }
     }
 
 

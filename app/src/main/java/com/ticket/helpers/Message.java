@@ -43,6 +43,7 @@ public class Message {
     }
 
     public void setData(String data) {
+        this.type = 3;
         this.data = data;
     }
 

@@ -29,6 +29,19 @@
             android:paddingBottom="10dp"
             android:orientation="vertical">
 
+            <VideoView android:id="@+id/videoMessage"
+                android:layout_width="150dip"
+                android:layout_height="150dip"
+                android:maxWidth="250dp"
+                />
+
+            <ImageView
+                android:id="@+id/imgMessage"
+                android:layout_width="150dip"
+                android:layout_height="150dip"
+                android:textColor="@android:color/black"
+                android:maxWidth="250dp" />
+
             <TextView
                 android:id="@+id/txtMessage"
                 android:layout_width="wrap_content"

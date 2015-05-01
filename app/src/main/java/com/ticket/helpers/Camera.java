@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class Camera {
 
-    public static final int ACTION_TAKE_PHOTO_B = 1;
+    public static final int ACTION_TAKE_PHOTO_B = 2;
     public static final int ACTION_TAKE_VIDEO = 3;
     private static final String JPEG_FILE_PREFIX = "IMG_";
     private static final String JPEG_FILE_SUFFIX = ".jpg";
