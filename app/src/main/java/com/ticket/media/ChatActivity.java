@@ -42,6 +42,8 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class ChatActivity extends Activity {
@@ -194,10 +196,6 @@ public class ChatActivity extends Activity {
 //
 //                httpPost.setEntity(entity);
 
-                System.out.println("tempMessage >>>>>>>>>>>>>> " + tempMessage);
-                System.out.println("device.getDeviceID():: " + device.getDeviceID());
-                System.out.println("device.getGoogleAccount():: " + device.getGoogleAccount());
-
                 // Making server call
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
                 nameValuePairs.add(new BasicNameValuePair("pT_SENDER", device.getDeviceID()));
@@ -217,8 +215,17 @@ public class ChatActivity extends Activity {
                 if (statusCode == 200) {
                     // Server response
                     responseString = EntityUtils.toString(r_entity);
-                    System.out.println("getContentCharSet >>>>>>>>>>>>>> " + EntityUtils.getContentCharSet(r_entity));
-                    System.out.println("responseString >>>>>>>>>>>>>> " + responseString);
+                    responseString = responseString.replaceAll("&lt;", "<");
+                    responseString = responseString.replaceAll("&gt;", ">");
+
+
+                    Pattern p = Pattern.compile("(?<=<en>)(.*)(?=</en>)");
+                    Matcher m = p.matcher(responseString);
+
+                    while (m.find()) {
+                        responseString = m.group();
+                    }
+
                 } else {
                     responseString = "Error Status Code: "
                             + statusCode;
