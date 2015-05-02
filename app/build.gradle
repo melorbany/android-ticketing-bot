@@ -37,6 +37,7 @@ dependencies {
 //    compile files('src/main/libs/httpclient-4.4.1.jar')
 //    compile files('src/main/libs/android-support-v4.jar')
 //    compile files('src/main/libs/httpcore-4.4.1.jar')
+    compile 'com.android.support:appcompat-v7:20.0.0'
     compile('org.apache.httpcomponents:httpmime:4.3.6') {
         exclude module: 'httpclient'
     }

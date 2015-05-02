@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -23,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.ticket.media.ImageDetailActivity;
 import com.ticket.media.R;
 
 import java.util.Date;
@@ -31,7 +35,7 @@ import java.util.Locale;
 
 public class ChatAdapter extends BaseAdapter {
 
-    private final List<Message> chatMessages;
+    public final List<Message> chatMessages;
     private Activity context;
 
     public ChatAdapter(Activity context, List<Message> chatMessages) {
@@ -57,7 +61,22 @@ public class ChatAdapter extends BaseAdapter {
         }
     }
 
-    @Override
+    public void onItemClick(AdapterView<?> parent, View view,
+                            int position, long id) {
+
+        Intent intent = new Intent();
+        intent.setClass(context, ImageDetailActivity.class);
+
+        Message message = chatMessages.get(position);
+        intent.putExtra("EXTRA_IMAGE", message.getPath());
+
+        // the sample activity
+        context.startActivity(intent);
+    }
+
+
+
+@Override
     public long getItemId(int position) {
         return position;
     }
@@ -84,7 +103,9 @@ public class ChatAdapter extends BaseAdapter {
         switch (type) {
             case 1:
                 holder.imgMessage.setVisibility(View.VISIBLE);
-                holder.imgMessage.setImageURI(chatMessage.getUri());
+                Image image = new Image();
+                Bitmap d = image.decodeSampledBitmapFromFile(chatMessage.getPath(),1000,1000);
+                holder.imgMessage.setImageBitmap(d);
                 holder.videoMessage.setVisibility(View.GONE);
                 holder.txtMessage.setVisibility(View.GONE);
                 break;

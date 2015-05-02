@@ -47,6 +47,10 @@
             android:name=".ChatActivity"
             android:label="@string/title_activity_chat" >
         </activity>
+        <activity
+            android:name=".ImageDetailActivity"
+            android:label="@string/title_activity_image_detail" >
+        </activity>
     </application>
 
 </manifest>

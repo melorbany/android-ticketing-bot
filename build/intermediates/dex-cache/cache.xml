@@ -9,11 +9,39 @@
         <dex dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\httpmime-4.3.6-9b57f164864fcc9852c20e8efeee820760f9ad05.jar" />
     </item>
     <item
+        jar="D:\Sources\adt-bundle-windows-x86_64-20140702\sdk\extras\android\m2repository\com\android\support\support-annotations\20.0.0\support-annotations-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="9d9013e9ff35fc3756411e62873c363c70c638fa">
+        <dex dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\support-annotations-20.0.0-281aebb3dfb5faadc077957322dd3f7683f094da.jar" />
+    </item>
+    <item
         jar="C:\Users\toshiba\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpclient-android\4.3.5\82edcaec6c7b4599eaeaaf11167ceea41db42f33\httpclient-android-4.3.5.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="82edcaec6c7b4599eaeaaf11167ceea41db42f33">
         <dex dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\httpclient-android-4.3.5-20207c9d112673c49149ab7f7484eb7a19653d1a.jar" />
+    </item>
+    <item
+        jar="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\libs\internal_impl-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d">
+        <dex dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\internal_impl-20.0.0-f7b716fc954b30d9ae1c9ba93db3cd28172e948e.jar" />
+    </item>
+    <item
+        jar="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\20.0.0\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="f21927d22fe31889ecce94dd697a2e75b137e0ef">
+        <dex dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\classes-43b76e415d19e0b9a27b89fd84bc5eca499b6549.jar" />
+    </item>
+    <item
+        jar="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="8694693636ab36910c8100ce527c258ff3ebece0">
+        <dex dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\classes-ea9ba03acd151c55ea11cd5a10c837dfefff47ab.jar" />
     </item>
 
 </items>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -59,6 +61,7 @@ public class ChatActivity extends Activity {
     public Device device;
     Camera camera;
 
+    ArrayList<Message> messagesList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,12 +70,31 @@ public class ChatActivity extends Activity {
         device = new Device(this);
         camera = new Camera(this);
 
+        messagesList = new ArrayList<Message>();
+
         messagesContainer = (ListView) findViewById(R.id.messagesContainer);
         messageEditText = (EditText) findViewById(R.id.messageEdit);
         sendButton = (Button) findViewById(R.id.chatSendButton);
 
         adapter = new ChatAdapter(ChatActivity.this, new ArrayList<Message>());
         messagesContainer.setAdapter(adapter);
+
+
+        messagesContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Intent intent = new Intent();
+                intent.setClass(ChatActivity.this, ImageDetailActivity.class);
+
+                Message message = adapter.chatMessages.get(position);
+                intent.putExtra("EXTRA_IMAGE", message.getPath());
+
+                // the sample activity
+                startActivity(intent);
+            }
+        });
+
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +163,7 @@ public class ChatActivity extends Activity {
 
     public void showMessage(Message message) {
         adapter.add(message);
+        messagesList.add(message);
 
         runOnUiThread(new Runnable() {
             @Override
@@ -161,6 +184,8 @@ public class ChatActivity extends Activity {
                     Message message =new Message();
                     message.setType(1);
                     message.setUri(imageUri);
+                    String filePath = getRealPathFromURI(imageUri);
+                    message.setPath(filePath);
                     message.setSender(true);
                     message.setDateSent(new Date());
                     showMessage(message);
@@ -279,5 +304,18 @@ public class ChatActivity extends Activity {
      * Fragment that appears in the "content_frame", shows a planet
      */
 
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
 
 }
