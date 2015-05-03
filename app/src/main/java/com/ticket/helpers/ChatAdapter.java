@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -68,10 +69,15 @@ public class ChatAdapter extends BaseAdapter {
         boolean isOutgoing = chatMessage.isSender();
         setAlignment(holder, isOutgoing);
         holder.txtMessage.setText(chatMessage.getData());
+
         if (chatMessage.isSender()) {
             holder.txtInfo.setText("["+getTimeText(chatMessage)+"] You:");
+            if(chatMessage.getType() == 1){
+                holder.audioSeekBar.setVisibility(View.VISIBLE);
+            }
         } else {
             holder.txtInfo.setText("Server Response");
+            holder.audioSeekBar.setVisibility(View.INVISIBLE);
         }
 
         return convertView;
@@ -131,6 +137,7 @@ public class ChatAdapter extends BaseAdapter {
         holder.content = (LinearLayout) v.findViewById(R.id.content);
         holder.contentWithBG = (LinearLayout) v.findViewById(R.id.contentWithBackground);
         holder.txtInfo = (TextView) v.findViewById(R.id.txtInfo);
+        holder.audioSeekBar = (LinearLayout) v.findViewById(R.id.audioSeekBar);
         return holder;
     }
 
@@ -143,5 +150,6 @@ public class ChatAdapter extends BaseAdapter {
         public TextView txtInfo;
         public LinearLayout content;
         public LinearLayout contentWithBG;
+        public LinearLayout audioSeekBar;
     }
 }
