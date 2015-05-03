@@ -2,6 +2,7 @@ package com.ticket.media;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -35,6 +37,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -84,14 +88,23 @@ public class ChatActivity extends Activity {
 
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Intent intent = new Intent();
-                intent.setClass(ChatActivity.this, ImageDetailActivity.class);
 
                 Message message = adapter.chatMessages.get(position);
-                intent.putExtra("EXTRA_IMAGE", message.getPath());
 
-                // the sample activity
-                startActivity(intent);
+                if(message.getType()==1) {
+//                    Intent intent = new Intent();
+//                    intent.setClass(ChatActivity.this, ImageDetailActivity.class);
+//
+//                    intent.putExtra("EXTRA_IMAGE", message.getPath());
+//
+//                    // the sample activity
+//                    startActivity(intent);
+
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse("file://" +message.getPath()), "image/*");
+                    startActivity(intent);
+                }
             }
         });
 
@@ -114,7 +127,7 @@ public class ChatActivity extends Activity {
 
                 messageEditText.setText("");
                 showMessage(chatMessage);
-                new UploadFileToServer().execute();
+                new UploadFileToServer(chatMessage).execute();
 
                 InputMethodManager imm = (InputMethodManager)getSystemService(
                         Context.INPUT_METHOD_SERVICE);
@@ -187,8 +200,11 @@ public class ChatActivity extends Activity {
                     String filePath = getRealPathFromURI(imageUri);
                     message.setPath(filePath);
                     message.setSender(true);
+                    message.setData(filePath);
                     message.setDateSent(new Date());
                     showMessage(message);
+                    new UploadFileToServer(message).execute();
+
                 }
                 break;
             } // ACTION_TAKE_PHOTO_B
@@ -208,9 +224,37 @@ public class ChatActivity extends Activity {
 
 
     private class UploadFileToServer extends AsyncTask<Void, Integer, String> {
+
+        /** progress dialog to show user that the backup is processing. */
+        private ProgressDialog dialog;
+        Message message;
+        private UploadFileToServer(Message message) {
+            this.message = message;
+        }
+
+        public  ProgressDialog createProgressDialog(Context mContext) {
+            ProgressDialog dialog = new ProgressDialog(mContext);
+            try {
+                dialog.show();
+            } catch (WindowManager.BadTokenException e) {
+
+            }
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.progress_dialog);
+            // dialog.setMessage(Message);
+            return dialog;
+        }
+
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            if (this.dialog == null) {
+                this.dialog = createProgressDialog(ChatActivity.this);
+                this.dialog.show();
+            } else {
+                this.dialog.show();
+            }
         }
 
         @Override
@@ -231,20 +275,34 @@ public class ChatActivity extends Activity {
 
 
             try {
-                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                        new AndroidMultiPartEntity.ProgressListener() {
+//                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
+//                        new AndroidMultiPartEntity.ProgressListener() {
+//
+//                            @Override
+//                            public void transferred(long num) {
+//                            }
+//                        });
+//
+//                entity.addPart("email", new StringBody(device.getGoogleAccount()));
+//                entity.addPart("device", new StringBody(device.getDeviceID()));
+//                entity.addPart("description", new StringBody(this.message.getData()));
 
-                            @Override
-                            public void transferred(long num) {
-                            }
-                        });
+                MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+                builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
-                entity.addPart("email", new StringBody(device.getGoogleAccount()));
-                entity.addPart("device", new StringBody(device.getDeviceID()));
-                entity.addPart("title", new StringBody("Hellllo"));
-                entity.addPart("description", new StringBody("dhdjhhd"));
+                if(this.message.getType()!=3) {
+                    File file = new File(this.message.getPath());
+                    FileBody fb = new FileBody(file);
+                    builder.addPart("file", fb);
+                }
 
-                httppost.setEntity(entity);
+                builder.addPart("email", new StringBody(device.getGoogleAccount()));
+                builder.addPart("device", new StringBody(device.getDeviceID()));
+                builder.addPart("description", new StringBody(this.message.getData()));
+
+                final HttpEntity builderEntity = builder.build();
+                httppost.setEntity(builderEntity);
+
 
                 // Making server call
                 HttpResponse response = httpclient.execute(httppost);
@@ -280,7 +338,7 @@ public class ChatActivity extends Activity {
                 if (jsonObj == null)
                     return;
 
-                returnValue = jsonObj.getString("id");
+                returnValue = jsonObj.getString("response");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -294,6 +352,10 @@ public class ChatActivity extends Activity {
 
                 showMessage(chatMessage);
             }
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+
             super.onPostExecute(result);
         }
 

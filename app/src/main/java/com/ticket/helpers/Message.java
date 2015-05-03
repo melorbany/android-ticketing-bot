@@ -12,10 +12,10 @@ import java.util.Date;
 public class Message {
 
 
-    int type = 0;
+    int type = 3;
     boolean isSender = true;
-    String data;
-    String path;
+    String data ="";
+    String path= "";
     Date DateSent ;
     Uri uri;
 
@@ -43,7 +43,6 @@ public class Message {
     }
 
     public void setData(String data) {
-        this.type = 3;
         this.data = data;
     }
 
