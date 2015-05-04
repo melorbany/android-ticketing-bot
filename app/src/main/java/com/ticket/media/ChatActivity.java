@@ -629,23 +629,25 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
     }
 
     public void record(View v) {
-        Log.d(TAG, "record");
-        this.mediaRecorder = new MediaRecorder();
-        this.mediaRecorder.setAudioChannels(1);
-        this.mediaRecorder.setAudioSamplingRate(44100);
-        this.mediaRecorder.setAudioEncodingBitRate(64000);
-        this.mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        this.mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        this.mediaRecorder.setOutputFile(this.audioFile.getAbsolutePath());
-        this.mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-        try {
-            this.mediaRecorder.prepare();
-            this.mediaRecorder.start();
+        if(recordButton.isEnabled()){
+            Log.d(TAG, "record");
+            this.mediaRecorder = new MediaRecorder();
+            this.mediaRecorder.setAudioChannels(1);
+            this.mediaRecorder.setAudioSamplingRate(44100);
+            this.mediaRecorder.setAudioEncodingBitRate(64000);
+            this.mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            this.mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+            this.mediaRecorder.setOutputFile(this.audioFile.getAbsolutePath());
+            this.mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+            try {
+                this.mediaRecorder.prepare();
+                this.mediaRecorder.start();
 
-            // update the buttons
-            this.setButtonsEnabled(false, true, false);
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to record()", e);
+                // update the buttons
+                this.setButtonsEnabled(false, true, false);
+            } catch (IOException e) {
+                Log.e(TAG, "Failed to record()", e);
+            }
         }
     }
 
