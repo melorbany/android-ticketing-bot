@@ -1,14 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.ticket.media.ChatActivity"
-    android:icon="@drawable/ic_action_new_attachment"
-    >
+    xmlns:tools="http://schemas.android.com/tools" tools:context="com.ticket.media.ChatActivity">
 
+    <item android:id="@+id/action_audio" android:title="@string/action_audio"
+        android:orderInCategory="100" android:showAsAction="never" />
     <item android:id="@+id/action_img" android:title="@string/action_img"
         android:orderInCategory="100" android:showAsAction="never" />
     <item android:id="@+id/action_video" android:title="@string/action_video"
         android:orderInCategory="100" android:showAsAction="never" />
-    <item android:id="@+id/action_audio" android:title="@string/action_audio"
-        android:orderInCategory="100" android:showAsAction="never" />
-
 </menu>

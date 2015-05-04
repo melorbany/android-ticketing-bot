@@ -101,25 +101,38 @@ public class ChatAdapter extends BaseAdapter {
         setAlignment(holder, isOutgoing,type);
 
         switch (type) {
-            case 1:
+            case Config.MESSAGE_TYPE_IMAGE:
                 holder.imgMessage.setVisibility(View.VISIBLE);
                 Image image = new Image();
                 Bitmap d = image.decodeSampledBitmapFromFile(chatMessage.getPath(),1000,1000);
                 holder.imgMessage.setImageBitmap(d);
                 holder.videoMessage.setVisibility(View.GONE);
                 holder.txtMessage.setVisibility(View.GONE);
+                holder.audioSeekBar.setVisibility(View.GONE);
                 break;
-            case 2:
+            case Config.MESSAGE_TYPE_VIDEO:
                 holder.videoMessage.setVisibility(View.VISIBLE);
                 holder.videoMessage.setVideoURI(chatMessage.getUri());
                 holder.imgMessage.setVisibility(View.GONE);
                 holder.txtMessage.setVisibility(View.GONE);
+                holder.audioSeekBar.setVisibility(View.GONE);
+                break;
+            case Config.MESSAGE_TYPE_AUDIO:
+                holder.videoMessage.setVisibility(View.GONE);
+                holder.imgMessage.setVisibility(View.GONE);
+                holder.txtMessage.setVisibility(View.GONE);
+                if(chatMessage.isSender()){
+                    holder.audioSeekBar.setVisibility(View.VISIBLE);
+                }else{
+                    holder.audioSeekBar.setVisibility(View.GONE);
+                }
                 break;
             default:
                 holder.txtMessage.setVisibility(View.VISIBLE);
                 holder.txtMessage.setText(chatMessage.getData());
                 holder.videoMessage.setVisibility(View.GONE);
                 holder.imgMessage.setVisibility(View.GONE);
+                holder.audioSeekBar.setVisibility(View.GONE);
                 break;
         }
 
@@ -241,6 +254,7 @@ public class ChatAdapter extends BaseAdapter {
         holder.contentWithBG = (LinearLayout) v.findViewById(R.id.contentWithBackground);
         holder.txtInfo = (TextView) v.findViewById(R.id.txtInfo);
         holder.content_frame = (FrameLayout) v.findViewById(R.id.content_frame);
+        holder.audioSeekBar = (LinearLayout) v.findViewById(R.id.audioSeekBar);
         return holder;
     }
 
@@ -256,6 +270,7 @@ public class ChatAdapter extends BaseAdapter {
         public TextView txtInfo;
         public LinearLayout content;
         public LinearLayout contentWithBG;
+        public LinearLayout audioSeekBar;
     }
 
 

@@ -48,7 +48,7 @@ public class SplashScreen extends Activity {
 //            }
 //        }, 1000);
 
-        intent = new Intent(SplashScreen.this, MainActivity.class);
+        intent = new Intent(SplashScreen.this, ChatActivity.class);
         new Handler().postDelayed(new Runnable() {
 
 			/*

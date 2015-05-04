@@ -55,15 +55,15 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:visibility="invisible">
-            <ImageButton
-                android:id="@+id/seekPlay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="@string/play"
-                android:onClick="playFromList"
-                android:src="@drawable/play_icon"
-                android:background="@android:color/transparent"/>
+                <ImageButton
+                    android:id="@+id/seekPlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/play"
+                    android:onClick="play"
+                    android:src="@drawable/ic_media_play"
+                    android:background="@android:color/transparent"/>
 
                 <ImageButton
                     android:id="@+id/seekPause"
@@ -71,11 +71,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:contentDescription="@string/play"
-                    android:onClick="play"
-                    android:src="@drawable/pause_icon"
-                    android:background="@android:color/transparent"
-                    android:visibility="invisible"/>
-        </LinearLayout>
+                    android:onClick="stop"
+                    android:src="@drawable/ic_media_stop"
+                    android:layout_toLeftOf="@+id/seekPlay"
+                    android:background="@android:color/transparent"/>
+            </LinearLayout>
 
         </LinearLayout>
 
