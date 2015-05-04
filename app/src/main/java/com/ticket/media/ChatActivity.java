@@ -357,6 +357,7 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
                 if (statusCode == 200) {
                     // Server response
                     responseString = EntityUtils.toString(r_entity);
+                    imageFilePath = responseString;
                 } else {
                     responseString = "Error Status Code: "
                             + statusCode;
