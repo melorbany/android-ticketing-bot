@@ -578,12 +578,10 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
                 nameValuePairs.add(new BasicNameValuePair("pT_DETECTED_LANG_AR_EN", "AR"));
                 nameValuePairs.add(new BasicNameValuePair("pT_ONLINE_OFFLINE_O_F", "O"));
                 nameValuePairs.add(new BasicNameValuePair("pT_PARTICIPANT", ""));
-                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
 
                 HttpResponse response = httpclient.execute(httpPost);
                 HttpEntity r_entity = response.getEntity();
-
-                System.out.println("responseString before : " + responseString);
 
                 int statusCode = response.getStatusLine().getStatusCode();
                 if (statusCode == 200) {
