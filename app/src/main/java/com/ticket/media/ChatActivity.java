@@ -170,7 +170,7 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
             return true;
         } else if (id == R.id.action_audio) {
             audioFile = new File(Environment.getExternalStorageDirectory()
-                    .getAbsolutePath() + "/" + System.currentTimeMillis() + "audio-recorder-output.m4a");
+                    .getAbsolutePath() + "/a_" + System.currentTimeMillis() + ".m4a");
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             // Get the layout inflater
@@ -195,9 +195,6 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
 
                     // send audio here
                     if (audioFile.length() != 0) {
-                        // upload file to server then send
-                        new FileUploader().execute();
-
                         // update list
                         Message audioMessage = new Message();
                         audioMessage.setData("Audio Message Sent");
@@ -206,6 +203,7 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
                         audioMessage.setType(Config.MESSAGE_TYPE_AUDIO);
                         audioMessage.setPath(audioFile.getAbsolutePath());
                         showMessage(audioMessage);
+                        new UploadFileToServer(audioMessage).execute();
                         new MessageSender(audioMessage).execute();
 
                         InputMethodManager imm = (InputMethodManager) getSystemService(
@@ -335,13 +333,16 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
                 MultipartEntityBuilder builder = MultipartEntityBuilder.create();
                 builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
-                //Upload image
+                //Upload file
+                FileBody fb = null;
                 if (this.message.getType() == Config.MESSAGE_TYPE_IMAGE) {
-                    File file = new File(this.message.getPath());
-                    FileBody fb = new FileBody(file);
-                    builder.addPart("file", fb);
+                    fb = new FileBody(new File(this.message.getPath()));
+                } else if (this.message.getType() == Config.MESSAGE_TYPE_AUDIO) {
+                    File sourceFile = new File(audioFile.getAbsolutePath());
+                    fb = new FileBody(sourceFile);
                 }
 
+                builder.addPart("file", fb);
                 builder.addPart("email", new StringBody(device.getGoogleAccount()));
                 builder.addPart("device", new StringBody(device.getDeviceID()));
                 builder.addPart("description", new StringBody(this.message.getData()));
@@ -357,7 +358,11 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
                 if (statusCode == 200) {
                     // Server response
                     responseString = EntityUtils.toString(r_entity);
-                    imageFilePath = responseString;
+                    if (this.message.getType() == Config.MESSAGE_TYPE_IMAGE) {
+                        imageFilePath = responseString;
+                    } else if (this.message.getType() == Config.MESSAGE_TYPE_AUDIO) {
+                        audioFilePath = responseString;
+                    }
                 } else {
                     responseString = "Error Status Code: "
                             + statusCode;
@@ -423,103 +428,6 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
         return result;
     }
 
-    /**
-     * Uploading the audioFile to server
-     */
-    private class FileUploader extends AsyncTask<Void, Integer, String> {
-        private ProgressDialog dialog;
-        public ProgressDialog createProgressDialog(Context mContext) {
-            ProgressDialog dialog = new ProgressDialog(mContext);
-            try {
-                dialog.show();
-            } catch (WindowManager.BadTokenException e) {
-
-            }
-            dialog.setCancelable(false);
-            dialog.setContentView(R.layout.progress_dialog);
-            return dialog;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if (this.dialog == null) {
-                this.dialog = createProgressDialog(ChatActivity.this);
-                this.dialog.show();
-            } else {
-                this.dialog.show();
-            }
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... progress) {
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            return uploadFile();
-        }
-
-        @SuppressWarnings("deprecation")
-        private String uploadFile() {
-            String responseString = null;
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL);
-
-            try {
-                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                        new AndroidMultiPartEntity.ProgressListener() {
-                            @Override
-                            public void transferred(long num) {
-                                publishProgress((int) ((num / (float) totalSize) * 100));
-                            }
-                        });
-
-                File sourceFile = new File(audioFile.getAbsolutePath());
-
-                // Adding audioFile data to http body
-                entity.addPart("audio", new FileBody(sourceFile));
-                entity.addPart("email", new StringBody(device.getGoogleAccount()));
-                entity.addPart("device", new StringBody(device.getDeviceID()));
-                entity.addPart("title", new StringBody("Audio Track", Charset.forName("UTF-8")));
-                entity.addPart("description", new StringBody("Audio Track", Charset.forName("UTF-8")));
-
-                totalSize = entity.getContentLength();
-                httppost.setEntity(entity);
-
-                // Making server call
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity r_entity = response.getEntity();
-
-                int statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode == 200) {
-                    // Server response
-                    responseString = EntityUtils.toString(r_entity);
-                } else {
-                    responseString = "Error Status Code: "
-                            + statusCode;
-                }
-
-            } catch (ClientProtocolException e) {
-                responseString = e.toString();
-            } catch (IOException e) {
-                responseString = e.toString();
-            } catch (Exception e) {
-                responseString = e.toString();
-            }
-
-            return responseString;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            super.onPostExecute(result);
-        }
-    }
-
     private static Document convertStringToDocument(String xmlStr) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
@@ -570,7 +478,7 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
                 } else if (message.getType() == Config.MESSAGE_TYPE_AUDIO) {
                     nameValuePairs.add(new BasicNameValuePair("pT_CONTENT", audioFilePath));
                     nameValuePairs.add(new BasicNameValuePair("pT_CONTENT_TYPE_T_I_V_L", "V"));
-                }else if(message.getType() == Config.MESSAGE_TYPE_IMAGE){
+                } else if (message.getType() == Config.MESSAGE_TYPE_IMAGE) {
                     nameValuePairs.add(new BasicNameValuePair("pT_CONTENT", imageFilePath));
                     nameValuePairs.add(new BasicNameValuePair("pT_CONTENT_TYPE_T_I_V_L", "I"));
                 }
@@ -628,7 +536,7 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
     }
 
     public void record(View v) {
-        if(recordButton.isEnabled()){
+        if (recordButton.isEnabled()) {
             Log.d(TAG, "record");
             this.mediaRecorder = new MediaRecorder();
             this.mediaRecorder.setAudioChannels(1);
