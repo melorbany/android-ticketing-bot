@@ -3,6 +3,6 @@
 
     <item android:id="@+id/action_audio" android:title="@string/action_audio" />
     <item android:id="@+id/action_img" android:title="@string/action_img" />
-    <item android:id="@+id/action_location" android:title="@string/action_location"/>
+    <item android:id="@+id/action_location" android:title="@string/action_location" android:visible="false"/>
     <item android:id="@+id/action_video" android:title="@string/action_video"/>
 </menu>

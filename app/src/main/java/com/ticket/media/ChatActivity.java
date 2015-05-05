@@ -114,7 +114,7 @@ public class ChatActivity extends BaseActivity implements MediaPlayer.OnCompleti
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setDataAndType(Uri.parse("file://" + message.getPath()), "image/*");
                     startActivity(intent);
-                }else if(message.getType() == Config.MESSAGE_TYPE_LOCATION) {
+                } else if (message.getType() == Config.MESSAGE_TYPE_LOCATION) {
                     String uri = String.format(Locale.ENGLISH, "geo:%f,%f",
                             message.getLocation().getLatitude(),
                             message.getLocation().getLongitude());
@@ -133,21 +133,26 @@ public class ChatActivity extends BaseActivity implements MediaPlayer.OnCompleti
                     return;
                 }
 
-                // Send chat message
-                Message chatMessage = new Message();
-                chatMessage.setData(messageText);
-                chatMessage.setSender(true);
-                chatMessage.setDateSent(new Date());
-                chatMessage.setType(Config.MESSAGE_TYPE_TEXT);
+                // send location in end of message
+                if (messageText.equals("#")) {
+                    startUpdate();
+                } else {
+                    // Send chat message
+                    Message chatMessage = new Message();
+                    chatMessage.setData(messageText);
+                    chatMessage.setSender(true);
+                    chatMessage.setDateSent(new Date());
+                    chatMessage.setType(Config.MESSAGE_TYPE_TEXT);
 
-                messageEditText.setText("");
-                showMessage(chatMessage);
-                //new UploadFileToServer(chatMessage).execute();
-                new MessageSender(chatMessage).execute();
+                    messageEditText.setText("");
+                    showMessage(chatMessage);
+                    //new UploadFileToServer(chatMessage).execute();
+                    new MessageSender(chatMessage).execute();
 
-                InputMethodManager imm = (InputMethodManager) getSystemService(
-                        Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(messageEditText.getWindowToken(), 0);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(
+                            Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(messageEditText.getWindowToken(), 0);
+                }
             }
         });
 
@@ -178,11 +183,9 @@ public class ChatActivity extends BaseActivity implements MediaPlayer.OnCompleti
             return true;
         } else if (id == R.id.action_video) {
             return true;
-        }
-        else if (id == R.id.action_location) {
+        } else if (id == R.id.action_location) {
             startUpdate();
-        }
-        else if (id == R.id.action_audio) {
+        } else if (id == R.id.action_audio) {
             audioFile = new File(Environment.getExternalStorageDirectory()
                     .getAbsolutePath() + "/a_" + System.currentTimeMillis() + ".m4a");
 
@@ -434,7 +437,7 @@ public class ChatActivity extends BaseActivity implements MediaPlayer.OnCompleti
     public void onLocationChanged(Location location) {
         super.onLocationChanged(location);
 
-        if(changeCount > 1){
+        if (changeCount > 1) {
             stopUpdate();
             Message message = new Message();
             message.setType(Config.MESSAGE_TYPE_LOCATION);
@@ -519,9 +522,9 @@ public class ChatActivity extends BaseActivity implements MediaPlayer.OnCompleti
                 } else if (message.getType() == Config.MESSAGE_TYPE_IMAGE) {
                     nameValuePairs.add(new BasicNameValuePair("pT_CONTENT", imageFilePath));
                     nameValuePairs.add(new BasicNameValuePair("pT_CONTENT_TYPE_T_I_V_L", "I"));
-                }else if (message.getType() == Config.MESSAGE_TYPE_LOCATION) {
+                } else if (message.getType() == Config.MESSAGE_TYPE_LOCATION) {
                     nameValuePairs.add(new BasicNameValuePair("pT_CONTENT", message.getLocation().getLatitude()
-                            +","+message.getLocation().getLongitude()));
+                            + "," + message.getLocation().getLongitude()));
                     nameValuePairs.add(new BasicNameValuePair("pT_CONTENT_TYPE_T_I_V_L", "L"));
                 }
 
@@ -565,17 +568,33 @@ public class ChatActivity extends BaseActivity implements MediaPlayer.OnCompleti
             if (result == null || result.equals(""))
                 return;
 
-
-            if (result != "") {
+            // if location message, send #
+            if (this.message.getType() == Config.MESSAGE_TYPE_LOCATION) {
                 Message chatMessage = new Message();
-                chatMessage.setData(result + "");
-                chatMessage.setSender(false);
+                chatMessage.setData("#");
+                chatMessage.setSender(true);
                 chatMessage.setDateSent(new Date());
+                chatMessage.setType(Config.MESSAGE_TYPE_TEXT);
+
+                messageEditText.setText("");
                 showMessage(chatMessage);
+                //new UploadFileToServer(chatMessage).execute();
+                new MessageSender(chatMessage).execute();
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(messageEditText.getWindowToken(), 0);
+            } else {
+                if (result != "") {
+                    Message chatMessage = new Message();
+                    chatMessage.setData(result + "");
+                    chatMessage.setSender(false);
+                    chatMessage.setDateSent(new Date());
+                    showMessage(chatMessage);
+                }
             }
             super.onPostExecute(result);
         }
-
     }
 
     public void record(View v) {
