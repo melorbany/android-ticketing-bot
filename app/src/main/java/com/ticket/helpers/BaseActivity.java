@@ -1,10 +1,16 @@
 package com.ticket.helpers;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -42,6 +48,9 @@ public class BaseActivity extends Activity implements GoogleApiClient.Connection
          */
     protected void startUpdate(){
 
+        Boolean result = checkLocationSettings();
+        if(!result) return;
+        
         dialog = ProgressDialog.show(this, "", "Fetching Current Location....", true);
         dialog.show();
         changeCount=0;
@@ -174,4 +183,33 @@ public class BaseActivity extends Activity implements GoogleApiClient.Connection
         // recommended in applications that request frequent location updates.
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
+
+    /**
+     *
+     * @return
+     */
+    public boolean checkLocationSettings() {
+
+        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                !lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            // Build the alert dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Location Services Not Enabled");
+            builder.setMessage("Please enable Location Services and GPS to get your current location.");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    // Show location settings when the user acknowledges the alert dialog
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            });
+            Dialog alertDialog = builder.create();
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.show();
+            return false;
+        }
+        return true;
+    }
+
 }
