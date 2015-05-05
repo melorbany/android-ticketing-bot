@@ -50,7 +50,7 @@ public class BaseActivity extends Activity implements GoogleApiClient.Connection
 
         Boolean result = checkLocationSettings();
         if(!result) return;
-        
+
         dialog = ProgressDialog.show(this, "", "Fetching Current Location....", true);
         dialog.show();
         changeCount=0;

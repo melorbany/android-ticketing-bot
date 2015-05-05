@@ -442,6 +442,8 @@ public class ChatActivity extends BaseActivity implements MediaPlayer.OnCompleti
             message.setData(location.getLatitude() + "," + location.getLongitude());
             message.setDateSent(new Date());
             showMessage(message);
+            new MessageSender(message).execute();
+
         }
 
     }
@@ -517,7 +519,12 @@ public class ChatActivity extends BaseActivity implements MediaPlayer.OnCompleti
                 } else if (message.getType() == Config.MESSAGE_TYPE_IMAGE) {
                     nameValuePairs.add(new BasicNameValuePair("pT_CONTENT", imageFilePath));
                     nameValuePairs.add(new BasicNameValuePair("pT_CONTENT_TYPE_T_I_V_L", "I"));
+                }else if (message.getType() == Config.MESSAGE_TYPE_LOCATION) {
+                    nameValuePairs.add(new BasicNameValuePair("pT_CONTENT", message.getLocation().getLatitude()
+                            +","+message.getLocation().getLongitude()));
+                    nameValuePairs.add(new BasicNameValuePair("pT_CONTENT_TYPE_T_I_V_L", "L"));
                 }
+
                 nameValuePairs.add(new BasicNameValuePair("pT_CAPTION", ""));
                 nameValuePairs.add(new BasicNameValuePair("pT_DETECTED_LANG_AR_EN", "AR"));
                 nameValuePairs.add(new BasicNameValuePair("pT_ONLINE_OFFLINE_O_F", "O"));
