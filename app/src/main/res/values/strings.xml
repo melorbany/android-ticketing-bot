@@ -18,6 +18,7 @@
     <string name="hello_world">Hello world!</string>
 
     <string name="action_img">Image</string>
+    <string name="action_location">Location</string>
     <string name="action_video">Video</string>
     <string name="action_audio">Audio</string>
     <string name="action_settings">Settings</string>

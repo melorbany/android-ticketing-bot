@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\toshiba\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpmime\4.3.6\cf8bacbf0d476c7f2221f861269365b66447f7ec\httpmime-4.3.6.jar"
+        jar="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\6.1.11\classes.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="cf8bacbf0d476c7f2221f861269365b66447f7ec">
-        <dex dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\httpmime-4.3.6-9b57f164864fcc9852c20e8efeee820760f9ad05.jar" />
+        sha1="0f700f6802ba1a1f1fa7ac26d5db0666a89d75a6">
+        <dex dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\classes-71baa9c04f20d2cd741670eadd1f51662d7326d6.jar" />
     </item>
     <item
         jar="D:\Sources\adt-bundle-windows-x86_64-20140702\sdk\extras\android\m2repository\com\android\support\support-annotations\20.0.0\support-annotations-20.0.0.jar"
@@ -14,6 +14,20 @@
         revision="20.0.0"
         sha1="9d9013e9ff35fc3756411e62873c363c70c638fa">
         <dex dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\support-annotations-20.0.0-281aebb3dfb5faadc077957322dd3f7683f094da.jar" />
+    </item>
+    <item
+        jar="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="8694693636ab36910c8100ce527c258ff3ebece0">
+        <dex dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\classes-ea9ba03acd151c55ea11cd5a10c837dfefff47ab.jar" />
+    </item>
+    <item
+        jar="C:\Users\toshiba\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpmime\4.3.6\cf8bacbf0d476c7f2221f861269365b66447f7ec\httpmime-4.3.6.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="cf8bacbf0d476c7f2221f861269365b66447f7ec">
+        <dex dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\httpmime-4.3.6-9b57f164864fcc9852c20e8efeee820760f9ad05.jar" />
     </item>
     <item
         jar="C:\Users\toshiba\.gradle\caches\modules-2\files-2.1\org.apache.httpcomponents\httpclient-android\4.3.5\82edcaec6c7b4599eaeaaf11167ceea41db42f33\httpclient-android-4.3.5.jar"
@@ -35,13 +49,6 @@
         revision="20.0.0"
         sha1="f21927d22fe31889ecce94dd697a2e75b137e0ef">
         <dex dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\classes-43b76e415d19e0b9a27b89fd84bc5eca499b6549.jar" />
-    </item>
-    <item
-        jar="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="8694693636ab36910c8100ce527c258ff3ebece0">
-        <dex dex="D:\Tutorial\location\AudioCaptureTest\app\build\intermediates\pre-dexed\debug\classes-ea9ba03acd151c55ea11cd5a10c837dfefff47ab.jar" />
     </item>
 
 </items>

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.location.Location;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.ticket.helpers.BaseActivity;
 import com.ticket.helpers.Camera;
 import com.ticket.helpers.ChatAdapter;
 import com.ticket.helpers.Config;
@@ -58,16 +60,16 @@ import org.xml.sax.InputSource;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 
-public class ChatActivity extends Activity implements MediaPlayer.OnCompletionListener {
+public class ChatActivity extends BaseActivity implements MediaPlayer.OnCompletionListener {
 
     private ChatAdapter adapter;
     private EditText messageEditText;
@@ -86,7 +88,6 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
     long totalSize = 0;
     String audioFilePath;
     String imageFilePath;
-
     ArrayList<Message> messagesList;
 
     @Override
@@ -108,10 +109,17 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
 
                 Message message = adapter.chatMessages.get(position);
 
-                if (message.getType() == 1) {
+                if (message.getType() == Config.MESSAGE_TYPE_IMAGE) {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.setDataAndType(Uri.parse("file://" + message.getPath()), "image/*");
+                    startActivity(intent);
+                }else if(message.getType() == Config.MESSAGE_TYPE_LOCATION) {
+                    String uri = String.format(Locale.ENGLISH, "geo:%f,%f",
+                            message.getLocation().getLatitude(),
+                            message.getLocation().getLongitude());
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                     startActivity(intent);
                 }
             }
@@ -142,6 +150,8 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
                 imm.hideSoftInputFromWindow(messageEditText.getWindowToken(), 0);
             }
         });
+
+
     }
 
 
@@ -168,7 +178,11 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
             return true;
         } else if (id == R.id.action_video) {
             return true;
-        } else if (id == R.id.action_audio) {
+        }
+        else if (id == R.id.action_location) {
+            startUpdate();
+        }
+        else if (id == R.id.action_audio) {
             audioFile = new File(Environment.getExternalStorageDirectory()
                     .getAbsolutePath() + "/a_" + System.currentTimeMillis() + ".m4a");
 
@@ -406,6 +420,28 @@ public class ChatActivity extends Activity implements MediaPlayer.OnCompletionLi
             }
 
             super.onPostExecute(result);
+        }
+
+    }
+
+
+    /**
+     * Callback that fires when the location changes.
+     *
+     * @param location
+     */
+    @Override
+    public void onLocationChanged(Location location) {
+        super.onLocationChanged(location);
+
+        if(changeCount > 1){
+            stopUpdate();
+            Message message = new Message();
+            message.setType(Config.MESSAGE_TYPE_LOCATION);
+            message.setLocation(mCurrentLocation);
+            message.setData(location.getLatitude() + "," + location.getLongitude());
+            message.setDateSent(new Date());
+            showMessage(message);
         }
 
     }

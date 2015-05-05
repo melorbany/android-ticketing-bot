@@ -1,6 +1,7 @@
 package com.ticket.helpers;
 
 
+import android.location.Location;
 import android.net.Uri;
 
 import java.sql.Time;
@@ -18,6 +19,7 @@ public class Message {
     String path= "";
     Date DateSent ;
     Uri uri;
+    Location location;
 
     public Message() {
     }
@@ -68,5 +70,13 @@ public class Message {
 
     public void setUri(Uri uri) {
         this.uri = uri;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
