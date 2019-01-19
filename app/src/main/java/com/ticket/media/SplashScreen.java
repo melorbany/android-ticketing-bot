@@ -13,7 +13,7 @@ public class SplashScreen extends Activity {
     TextView textView;
     ImageView imgLogo;
     // Splash screen timer
-    private int splashTime = 6000;
+    private int splashTime = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class SplashScreen extends Activity {
 //            }
 //        }, 1000);
 
-        intent = new Intent(SplashScreen.this, MainActivity.class);
+        intent = new Intent(SplashScreen.this, ChatActivity.class);
         new Handler().postDelayed(new Runnable() {
 
 			/*
