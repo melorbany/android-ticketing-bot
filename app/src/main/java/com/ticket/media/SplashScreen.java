@@ -13,7 +13,7 @@ public class SplashScreen extends Activity {
     TextView textView;
     ImageView imgLogo;
     // Splash screen timer
-    private int splashTime = 3000;
+    private int splashTime = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
