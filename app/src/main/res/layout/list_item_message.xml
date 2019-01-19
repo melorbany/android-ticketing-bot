@@ -29,6 +29,19 @@
             android:paddingBottom="10dp"
             android:orientation="vertical">
 
+            <VideoView android:id="@+id/videoMessage"
+                android:layout_width="150dip"
+                android:layout_height="150dip"
+                android:maxWidth="250dp"
+                />
+
+            <ImageView
+                android:id="@+id/imgMessage"
+                android:layout_width="150dip"
+                android:layout_height="150dip"
+                android:textColor="@android:color/black"
+                android:maxWidth="250dp" />
+
             <TextView
                 android:id="@+id/txtMessage"
                 android:layout_width="wrap_content"
@@ -42,15 +55,15 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:visibility="invisible">
-            <ImageButton
-                android:id="@+id/seekPlay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:contentDescription="@string/play"
-                android:onClick="playFromList"
-                android:src="@drawable/play_icon"
-                android:background="@android:color/transparent"/>
+                <ImageButton
+                    android:id="@+id/seekPlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/play"
+                    android:onClick="play"
+                    android:src="@drawable/ic_media_play"
+                    android:background="@android:color/transparent"/>
 
                 <ImageButton
                     android:id="@+id/seekPause"
@@ -58,11 +71,22 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:contentDescription="@string/play"
-                    android:onClick="play"
-                    android:src="@drawable/pause_icon"
-                    android:background="@android:color/transparent"
-                    android:visibility="invisible"/>
-        </LinearLayout>
+                    android:onClick="stop"
+                    android:src="@drawable/ic_media_stop"
+                    android:layout_toLeftOf="@+id/seekPlay"
+                    android:background="@android:color/transparent"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/mapLayout"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/map3"
+                android:background="@android:color/transparent"/>
+
+
+
+
 
         </LinearLayout>
 
