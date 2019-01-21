@@ -1,11 +1,14 @@
-# android-ticketing-bot
+# Android Ticketing Chat-bot
 Ticketing Chat Bot in Android
 
 Send tickets as a chat to your bot server.
 
-- Send Normal Text
-- Send Current Location
-- Send Audio
+## Messages Types
+
+- Text Message
+- Current Location
+- Audio
+- Image
 
 ## TODO ##
 
